@@ -1,0 +1,7 @@
+.idea
+node_modules
+logs
+dist
+.env
+# Project exclude paths
+/src/server.js

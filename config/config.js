@@ -1,0 +1,89 @@
+const fs = require('fs');
+
+const getMainCssFile = fs.readdirSync('./src/public/css/');
+
+const getJsFiles = fs.readdirSync('./src/public/js/');
+
+// Export variables
+module.exports = {
+    name: 'Example Project',
+    paths: {
+        src: {
+            base: './src/',
+        },
+        dist: {
+            base: './dist/',
+            public: './dist/public',
+        },
+        public: {
+            base: './src/public/',
+            css: './src/public/css/',
+            fonts: './src/public/fonts/',
+            img: './src/public/img/',
+            js: './src/public/js/',
+        },
+        client: {
+            base: './src/client/',
+            modules: './src/client/modules/',
+            sass: './src/client/sass/',
+            templates: './src/client/templates/',
+        },
+        config: {
+            base: './config/',
+        },
+    },
+    urls: {
+        dev: 'http://localhost:3000/',
+        proxy: 'http://localhost:3001/',
+    },
+    ports: {
+        dev: '3000',
+        proxy: '3001',
+    },
+    vars: {
+        sassName: 'main.sass',
+    },
+    globs: {
+        src: ['./src/**/*'],
+        distCSS: ['./src/public/css/*.css'],
+        distJS: ['./src/public/js/*.js'],
+        distSASS: ['./src/client/sass/**/*.sass'],
+        distModules: ['./src/client/modules/**/*'],
+        distImg: ['./src/public/img/**/*'],
+        public: ['./src/public/**/*'],
+        distTSServer: ['./src/**/*.ts'],
+    },
+    files: {
+        html: './src/public/index.html',
+        template: './src/client/templates/module.html',
+        favicon: './src/public/img/favicon/tour-favicon.ico',
+        sass: './src/client/sass/main.sass',
+        ts: './src/client/modules/main.ts',
+        wasm: './src/client/modules/implementation/assembly/wasm.ts',
+        sw: './src/client/modules/implementation/serviceWorker/sw.ts',
+        server: './src/server.ts',
+        get: {
+            css: getMainCssFile,
+            js: getJsFiles,
+        },
+    },
+    configs: {
+        webpack: {
+            dev: './webpack.dev.js',
+            build: './webpack.build.js',
+            sw: './webpack.sw.js',
+            node: './webpack.node.js',
+        },
+        ts: {
+            node: 'tsconfig.node.json',
+            dev: 'tsconfig.json',
+            build: 'tsconfig.build.json',
+        },
+    },
+    criticalCssConfig: {
+        criticalWidthMobile: 375,
+        criticalHeightMobile: 667,
+        criticalWidthDesktop: 1376,
+        criticalHeightDesktop: 768,
+    },
+};
