@@ -4,6 +4,7 @@ type ButtonProps = {
     class?: string;
     children: string;
     onClick?(event: React.MouseEvent<HTMLButtonElement>): void;
+    type: string;
 };
 
 export default (props: ButtonProps): FunctionComponentElement<ButtonProps> => {

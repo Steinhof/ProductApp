@@ -1,17 +1,44 @@
-import React, { Component } from 'react';
+import React, { ReactElement } from 'react';
+import usePromise from 'react-promise';
+import { connect } from 'react-redux';
 import Product from '../../components/Product/Product';
 
-export default class ProductsList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+// import { StateToProps } from '../../../../types/store/store';
 
-    render() {
-        return (
-            <div className="product__container">
-                <Product />
-            </div>
-        );
-    }
+function ProductsList({ products }): ReactElement {
+    const { value, loading } = usePromise<string>(products);
+
+    // Removes loading spinner when fetch finished
+    const removeSpinnerHandler = () => {
+        const spinnerUI = document.querySelector('.spinner');
+        if (spinnerUI) {
+            spinnerUI.remove();
+        }
+    };
+
+    return (
+        <div className="product__container">
+            {!loading
+                ? value.map(item => (
+                      <Product
+                          key={item._id}
+                          id={item._id}
+                          name={item.name}
+                          description={item.description}
+                          price={item.price}
+                          date={item.date}
+                      />
+                  ))
+                : null}
+            {removeSpinnerHandler()}
+        </div>
+    );
 }
+
+const mapStateToProps = ({ product }: any) => {
+    return {
+        products: product,
+    };
+};
+
+export default connect(mapStateToProps)(ProductsList);

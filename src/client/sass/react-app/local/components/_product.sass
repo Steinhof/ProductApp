@@ -1,0 +1,58 @@
+// -----------------------------------------------------------------------------
+// PRODUCT COMPONENT
+// -----------------------------------------------------------------------------
+
+// Product component (react)
+//
+// Markup:
+//<div className="product">
+//            <div className="product__data">
+//                <div className="product__name">
+//                    <span className="product__info">Name</span>
+//                    {name}
+//                </div>
+//                <div className="product__description">
+//                    <span className="product__info">Description</span>
+//                    {description}
+//                </div>
+//                <div className="product__price">
+//                    <span className="product__info">Price</span>
+//                    {price}
+//                </div>
+//                <div className="product__date">
+//                    <span className="product__info">Date</span>
+//                    {date}
+//                </div>
+//            </div>
+//            <Button type="button" class="product__btn btn--delete btn">
+//                Delete
+//            </Button>
+//        </div>
+//
+// Styleguide Components.Product
+//
+
+.product
+	display: flex
+	flex-direction: row
+	justify-content: space-between
+	margin-bottom: 0.5rem
+	border: 1px solid $color-grey-ligth
+	border-radius: 3px
+
+
+.product__data
+	margin-left: 1rem
+	font-size: 1.3rem
+
+
+.product__info
+	display: block
+	font-variation-settings: "wght" 600
+	font-size: 1.6rem
+
+
+.product__btn
+	align-self: start
+	margin: 2rem
+	padding: 0.5rem 1rem

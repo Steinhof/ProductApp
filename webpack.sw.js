@@ -1,6 +1,5 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
-const WebpackNotifierPlugin = require('webpack-notifier');
 
 // Settings
 const cfg = require('./config/config');
@@ -21,14 +20,10 @@ module.exports = {
             {
                 test: /\.ts$/,
                 use: [
-                    'cache-loader',
                     {
-                        loader: 'ts-loader',
+                        loader: 'babel-loader',
                         options: {
-                            happyPackMode: true,
-                            transpileOnly: true,
-                            experimentalFileCaching: true, // Cache results of previous operation
-                            configFile: cfg.configs.ts.build,
+                            presets: ['@babel/preset-env'],
                         },
                     },
                 ],
@@ -38,13 +33,6 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.js'],
     },
-    plugins: [
-        new WebpackNotifierPlugin({
-            excludeWarnings: false,
-            sound: true,
-            wait: true,
-        }),
-    ],
     optimization: {
         minimizer: [
             new TerserPlugin({

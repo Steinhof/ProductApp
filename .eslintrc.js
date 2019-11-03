@@ -12,8 +12,8 @@ module.exports = {
     plugins: [
         '@typescript-eslint',
         'react',
-        "jsx-a11y",
-        "react-hooks"
+        'jsx-a11y',
+        'react-hooks'
         // 'prettier' commented as i don't want to run prettier through eslint because performance
     ],
     env: {
@@ -30,18 +30,20 @@ module.exports = {
         jest: true,
     },
     globals: {
-        // Jest Puppeteer, see https://github.com/smooth-code/jest-puppeteer/blob/v4.0.0/README.md#configure-eslint
+        // Jest Puppeteer, [see https://github.com/smooth-code/jest-puppeteer/blob/v4.0.0/README.md#configure-eslint]
         page: true
     },
     extends: [
+        "eslint:recommended",
+        'plugin:react/recommended',
         'airbnb-typescript',
         'plugin:@typescript-eslint/recommended',
         'plugin:prettier/recommended',
         'prettier/@typescript-eslint',
+        "prettier",
         'prettier/react'
     ],
     rules: {
-        'indent': [2, 4, { "SwitchCase": 1 }],
         // "typescript/no-var-requires": "off", //Disable require imports
         'import/no-unresolved': 'off',
         // 'no-cycle': [2, { maxDepth: 1 }], // Works wrong with express

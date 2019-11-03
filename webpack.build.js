@@ -5,7 +5,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Fibers = require('fibers');
-const WebpackNotifierPlugin = require('webpack-notifier');
 const CriticalCssPlugin = require('critical-css-webpack-plugin');
 
 // Settings
@@ -17,7 +16,7 @@ module.exports = {
     context: __dirname,
     target: 'web',
     entry: {
-        main: path.resolve(__dirname, cfg.files.ts),
+        main: path.resolve(__dirname, cfg.files.reactMain),
     },
     output: {
         filename: 'js/[name].[contenthash].js',
@@ -26,13 +25,13 @@ module.exports = {
         // libraryTarget: 'commonjs2', // To make the library compatible with other environments
     },
     resolve: {
-        extensions: ['.ts', '.js', '.css', '.sass'],
+        extensions: ['.ts', '.tsx', '.js', '.css', '.sass'],
     },
     module: {
         rules: [
             {
-                test: /\.ts$/,
-                use: ['cache-loader', 'babel-loader'],
+                test: /\.ts(x?)$/,
+                use: ['babel-loader'],
                 include: path.resolve('src'),
             },
             {
@@ -103,11 +102,6 @@ module.exports = {
         }),
         new ScriptExtHtmlWebpackPlugin({
             preload: 'runtime', // async, defer, type='module', preload, prefetch, module
-        }),
-        new WebpackNotifierPlugin({
-            excludeWarnings: false,
-            sound: true,
-            wait: true,
         }),
     ],
     optimization: {

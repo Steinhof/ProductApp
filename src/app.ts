@@ -4,14 +4,17 @@ import helmet from 'helmet';
 import compression from 'compression';
 import expressGraphql from 'express-graphql';
 import logger from './config/logger';
-import schema from './graphql/schema';
 import connectToMongoDb from './database/database';
+import resolver from './graphql/resolver';
+import productSchema from './graphql/product.schema';
 
 // Express server
 const app = express();
 
 // Database
-connectToMongoDb();
+connectToMongoDb().catch(err =>
+    logger.error(`[NODE-APP] Can't run mongoDB connect. ${err}`),
+);
 
 // Middleware
 app.use(compression());
@@ -20,9 +23,9 @@ app.use(helmet.frameguard());
 app.use(
     '/graphql',
     expressGraphql({
-        schema,
-        // rootValue: resolver,
-        graphiql: true,
+        schema: productSchema,
+        rootValue: resolver,
+        // graphiql: true,
     }),
 );
 

@@ -5,6 +5,6 @@ base SASS mixins, shared icons, general font (if needed),
 utility classes, and maybe shared grids if it suits all projects.
 
 
-# Natours project
+# React app project
 
 Collection of all modules in this project.

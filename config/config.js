@@ -31,6 +31,9 @@ module.exports = {
         config: {
             base: './config/',
         },
+        logs: {
+            base: './logs',
+        },
     },
     urls: {
         dev: 'http://localhost:3000/',
@@ -59,9 +62,11 @@ module.exports = {
         favicon: './src/public/img/favicon/tour-favicon.ico',
         sass: './src/client/sass/main.sass',
         ts: './src/client/modules/main.ts',
+        reactMain: './src/client/modules/main.tsx',
         wasm: './src/client/modules/implementation/assembly/wasm.ts',
         sw: './src/client/modules/implementation/serviceWorker/sw.ts',
-        server: './src/server.ts',
+        serverTS: './src/server.ts',
+        serverJS: './src/server.js',
         get: {
             css: getMainCssFile,
             js: getJsFiles,

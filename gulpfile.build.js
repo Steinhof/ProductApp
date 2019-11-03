@@ -3,7 +3,6 @@ const del = require('del');
 const typedoc = require('gulp-typedoc');
 const imagemin = require('gulp-imagemin');
 const webpack = require('webpack');
-const nodemon = require('gulp-nodemon');
 const SWInjectFiles = require('./config/SWInjectFiles');
 
 /* File paths */
@@ -21,30 +20,10 @@ gulp.task('CLEAN', done => {
 });
 
 // -----------------------------------------------------------------------------
-// NODEMON SERVER
+// NODE WEBPACK SERVER
 // -----------------------------------------------------------------------------
 gulp.task('START-SERVER', done => {
-    let started = false;
-    nodemon({
-        script: cfg.files.server,
-        ext: 'ts',
-        args: [
-            '--transpile-only',
-            '--pretty',
-            '--project',
-            'tsconfig.node.json',
-        ],
-        ignore: ['node_modules/'],
-        env: {
-            NODE_ENV: 'production',
-        },
-        scriptPosition: 4, // File name should be at the end
-    }).on('start', () => {
-        if (!started) {
-            done();
-            started = true;
-        }
-    });
+    webpack(require(cfg.configs.webpack.node), webpackErrorHandler);
     done();
 });
 
@@ -68,16 +47,20 @@ gulp.task('SW', done => {
 // INJECT CACHE FILES TO SW
 // -----------------------------------------------------------------------------
 gulp.task('SWFILES', done => {
-    const fillSW = new SWInjectFiles('./src/public/sw.js', {
-        ignorePath: './src/public',
-    });
+    function timeOut() {
+        const fillSW = new SWInjectFiles('./src/public/sw.js', {
+            ignorePath: './src/public',
+        });
 
-    fillSW.writeStaticFiles([
-        './src/public/img/**/*',
-        './src/public/js/*',
-        './src/public/css/*',
-        './src/public/index.html',
-    ]);
+        fillSW.writeStaticFiles([
+            './src/public/img/**/*',
+            './src/public/js/*',
+            './src/public/css/*',
+            './src/public/index.html',
+        ]);
+    }
+    setTimeout(() => timeOut(), 3000);
+
     done();
 });
 
@@ -127,10 +110,10 @@ gulp.task(
     'default',
     gulp.series(
         'CLEAN',
-        'IMAGEMIN',
-        'WEBPACK',
         'SW',
+        'IMAGEMIN',
         'START-SERVER',
+        'WEBPACK',
         'SWFILES',
     ),
 );

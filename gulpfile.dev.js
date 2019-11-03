@@ -15,7 +15,11 @@ const webpackErrorHandler = require('./config/webpackErrorHandler');
 // DELETE OLD FILES
 // -----------------------------------------------------------------------------
 gulp.task('CLEAN', () => {
-    return del([cfg.globs.distCSS[0], cfg.globs.distJS[0]]);
+    return del([
+        cfg.globs.distCSS[0],
+        cfg.globs.distJS[0],
+        cfg.paths.logs.base,
+    ]);
 });
 
 // -----------------------------------------------------------------------------

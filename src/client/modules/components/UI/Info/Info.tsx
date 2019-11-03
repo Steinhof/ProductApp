@@ -1,6 +1,6 @@
-import React, { FunctionComponentElement } from 'react';
+import React from 'react';
 import './Info.sass';
 
-export default (): FunctionComponentElement<void> => {
-    return <div className="info">Item successfully added</div>;
-};
+export default function Info() {
+    return <div className="is-success">Item successfully added</div>;
+}

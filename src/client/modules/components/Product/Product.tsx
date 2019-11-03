@@ -1,27 +1,51 @@
-import React, { Component } from 'react';
+import React, { ReactElement } from 'react';
+import { connect } from 'react-redux';
+import { AnyAction } from 'redux';
 import Button from '../UI/Button/Button';
-import './Product.sass';
-import { ReactRender } from '../../react-app-env';
+import { deleteProduct } from '../../store/actions/list';
 
-type ProductProps = {}
+function Product({
+    name,
+    description,
+    price,
+    date,
+    id,
+    dispatch,
+}: AnyAction): ReactElement {
+    // Dispatch action to delete object from store and DB
+    const removeProductHandler = (objectID: string): void => {
+        dispatch(deleteProduct(objectID));
+    };
 
-export default class Product extends Component<> {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-
-    render(): ReactRender {
-        return (
-            <div className="product">
-                <div className="product__data">
-                    <div className="product__name">Name {}</div>
-                    <div className="product__description">Description {}</div>
-                    <div className="product__price">Price{}</div>
-                    <div className="product__date">Creation Date{}</div>
+    return (
+        <div className="product">
+            <div className="product__data">
+                <div className="product__name">
+                    <span className="product__info">Name</span>
+                    {name}
                 </div>
-                <Button class="product__btn btn--delete btn">Delete</Button>
+                <div className="product__description">
+                    <span className="product__info">Description</span>
+                    {description}
+                </div>
+                <div className="product__price">
+                    <span className="product__info">Price</span>
+                    {price}
+                </div>
+                <div className="product__date">
+                    <span className="product__info">Date</span>
+                    {date}
+                </div>
             </div>
-        );
-    }
+            <Button
+                type="button"
+                class="product__btn btn--delete btn"
+                onClick={(): void => removeProductHandler(id)}
+            >
+                Delete
+            </Button>
+        </div>
+    );
 }
+
+export default connect()(Product);

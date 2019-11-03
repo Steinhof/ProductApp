@@ -17,7 +17,7 @@ module.exports = {
     mode: 'production',
     context: __dirname,
     entry: {
-        server: path.resolve(__dirname, cfg.files.server),
+        server: path.resolve(__dirname, cfg.files.serverTS),
     },
     output: {
         filename: '[name].js',
@@ -54,10 +54,10 @@ module.exports = {
     },
     plugins: [
         new NodemonPlugin({
-            ext: 'js',
+            ext: 'js, json',
             env: {
                 NODE_ENV: 'development',
-                NODE_OPTIONS: '--inspect',
+                // NODE_OPTIONS: '--inspect', // To run debugger
             },
         }),
     ],
