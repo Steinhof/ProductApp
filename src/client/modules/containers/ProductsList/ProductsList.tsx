@@ -6,8 +6,8 @@ import { InitialState, StoreProps } from '../../../../types/store/store';
 
 class ProductsList extends Component<StoreProps> {
     componentDidMount(): void {
-        const { getProductsFromDb: fetchProducts } = this.props;
-        fetchProducts();
+        const { getProductsFromDb } = this.props;
+        getProductsFromDb();
     }
 
     render(): ReactElement | null {
@@ -21,20 +21,20 @@ class ProductsList extends Component<StoreProps> {
             }
         };
 
-        if (!products.items) return null;
-
         return (
             <div className="product__container">
-                {products.items.map(item => (
-                    <Product
-                        key={item._id}
-                        id={item._id}
-                        name={item.name}
-                        description={item.description}
-                        price={item.price}
-                        date={item.date}
-                    />
-                ))}
+                {products.items.length
+                    ? products.items.map(item => (
+                          <Product
+                              key={item._id}
+                              id={item._id}
+                              name={item.name}
+                              description={item.description}
+                              price={item.price}
+                              date={item.date}
+                          />
+                      ))
+                    : null}
                 {removeSpinnerHandler()}
             </div>
         );
