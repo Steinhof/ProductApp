@@ -1,16 +1,20 @@
-import React, { FunctionComponentElement } from 'react';
+import React, { ReactElement } from 'react';
 
 type ButtonProps = {
-    class?: string;
+    styleClass?: string;
     children: string;
-    onClick?(event: React.MouseEvent<HTMLButtonElement>): void;
+    removeProduct?(event: React.MouseEvent<HTMLButtonElement>): void;
     type: string;
 };
 
-export default (props: ButtonProps): FunctionComponentElement<ButtonProps> => {
+export default function({
+    removeProduct,
+    children,
+    styleClass,
+}: ButtonProps): ReactElement {
     return (
-        <button onClick={props.onClick} className={props.class} type="submit">
-            {props.children}
+        <button onClick={removeProduct} className={styleClass} type="submit">
+            {children}
         </button>
     );
-};
+}

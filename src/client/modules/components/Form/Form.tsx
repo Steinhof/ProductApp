@@ -74,7 +74,7 @@ function Form({ dispatch }: AnyAction): ReactElement {
                     <option value="€">€</option>
                     <option value="₽">₽</option>
                 </select>
-                <Button class="btn btn--submit" type="submit">
+                <Button styleClass="btn btn--submit" type="submit">
                     Add
                 </Button>
             </form>

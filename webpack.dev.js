@@ -26,7 +26,7 @@ module.exports = {
     mode: 'development',
     context: __dirname,
     entry: {
-        main: path.resolve(__dirname, 'src/client/modules/main.tsx'),
+        main: path.resolve(__dirname, cfg.files.reactMain),
     },
     // externals: {
     //     // to avoid bundling all dependencies - use cdn react

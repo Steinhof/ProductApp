@@ -1,10 +1,14 @@
 const webpack = require('webpack');
 const path = require('path');
+const glob = require('glob');
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 const Fibers = require('fibers');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const PurgecssPlugin = require('purgecss-webpack-plugin');
 const CriticalCssPlugin = require('critical-css-webpack-plugin');
 
 // Settings
@@ -40,9 +44,7 @@ module.exports = {
                     MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
-                        options: {
-                            importLoaders: 2,
-                        },
+                        options: { importLoaders: 2 },
                     },
                     'postcss-loader',
                     'group-css-media-queries-loader',
@@ -61,6 +63,7 @@ module.exports = {
         ],
     },
     plugins: [
+        new FixStyleOnlyEntriesPlugin(),
         new CriticalCssPlugin({
             base: cfg.paths.public.base,
             src: 'index.html',
@@ -100,6 +103,13 @@ module.exports = {
             chunkFilename: 'css/[id].[contenthash].css',
             ignoreOrder: false, // Enable to remove warnings about conflicting order
         }),
+        new PurgecssPlugin({
+            paths: glob.sync(`${cfg.paths.src.base}/**/*`, { nodir: true }),
+            trim: true,
+            shorten: true,
+            keyframes: true,
+            fontFace: true,
+        }),
         new ScriptExtHtmlWebpackPlugin({
             preload: 'runtime', // async, defer, type='module', preload, prefetch, module
         }),
@@ -122,6 +132,13 @@ module.exports = {
                             .join('~')}`;
                     },
                 },
+                styles: {
+                    name: 'styles',
+                    test: /\.css$/,
+                    chunks: 'all',
+                    enforce: true,
+                    reuseExistingChunk: true,
+                },
             },
         },
         minimizer: [
@@ -129,6 +146,7 @@ module.exports = {
                 cache: true,
                 parallel: true,
             }),
+            new OptimizeCSSAssetsPlugin({}),
         ],
     },
 };

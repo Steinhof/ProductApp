@@ -39,8 +39,8 @@ function Product({
             </div>
             <Button
                 type="button"
-                class="product__btn btn--delete btn"
-                onClick={(): void => removeProductHandler(id)}
+                styleClass="product__btn btn--delete btn"
+                removeProduct={(): void => removeProductHandler(id)}
             >
                 Delete
             </Button>

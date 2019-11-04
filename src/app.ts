@@ -33,7 +33,7 @@ app.use(
 app.use(express.static(path.resolve(__dirname, 'public')));
 
 // Server start
-const PORT = parseInt(process.env.SERVER_PORT as string, 10) || 8000;
+const PORT = parseInt(process.env.PORT as string, 10) || 80;
 
 app.listen(PORT, () => {
     logger.info(`Server running at port ${PORT}`);
