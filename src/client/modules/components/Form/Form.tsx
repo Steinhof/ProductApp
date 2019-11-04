@@ -9,7 +9,11 @@ function Form({ dispatch }: AnyAction): ReactElement {
     // State hooks
     const [state, setState] = useState(false);
 
-    // Load all products from DB
+    // Show result banner
+    const showResultInfo = () => {
+        setTimeout(() => setState(false), 2000);
+        return <Info />;
+    };
 
     // Send new product to DB
     const submitProductHandler = (event: any): void => {
@@ -19,11 +23,6 @@ function Form({ dispatch }: AnyAction): ReactElement {
             name: event.target[0].value,
             description: event.target[1].value,
             price: event.target[2].value + event.target[3].value,
-            date: new Date().toLocaleString('en-GB', {
-                year: 'numeric',
-                month: '2-digit',
-                day: 'numeric',
-            }),
         };
 
         // Add product to state store
@@ -31,23 +30,14 @@ function Form({ dispatch }: AnyAction): ReactElement {
 
         // Reset form inputs
         event.target.reset();
-    };
 
-    // Show result banner
-    const showResultInfo = () => {
-        setTimeout(() => setState(false), 2000);
-        return <Info />;
+        // Show info banner after form submit
+        setState(true);
     };
 
     return (
         <>
-            <form
-                className="form"
-                onSubmit={(evt): void => {
-                    submitProductHandler(evt);
-                    setState(true);
-                }}
-            >
+            <form className="form" onSubmit={submitProductHandler}>
                 <input
                     className="form__input--name"
                     type="text"
