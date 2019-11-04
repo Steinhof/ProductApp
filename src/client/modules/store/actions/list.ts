@@ -1,14 +1,21 @@
 import { Dispatch } from 'redux';
 import request from 'graphql-request';
-import { DELETE_PRODUCT } from './actionsTypes';
+import { DELETE_PRODUCT, GET_PRODUCTS_DATA } from './actionsTypes';
 
 /**
  * Fetch all products in mongoDB + and sets loading state
  */
-export async function getProductsFromDb() {
-    const query = `query { getProducts { _id name description price date } }`;
+export function getProductsFromDb() {
+    return async (dispatch: Dispatch) => {
+        const query = `query { getProducts { _id name description price date } }`;
 
-    return request('/graphql', query);
+        return request('/graphql', query).then(res =>
+            dispatch({
+                type: GET_PRODUCTS_DATA,
+                payload: res.getProducts,
+            }),
+        );
+    };
 }
 
 /**

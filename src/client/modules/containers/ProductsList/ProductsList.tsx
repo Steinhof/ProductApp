@@ -1,45 +1,57 @@
-import React, { ReactElement } from 'react';
-import usePromise from 'react-promise';
+import React, { Component, ReactElement } from 'react';
 import { connect } from 'react-redux';
 import Product from '../../components/Product/Product';
-import { PostObject } from '../../../../types/database';
+import { getProductsFromDb } from '../../store/actions/list';
+import { InitialState, StoreProps } from '../../../../types/store/store';
 
-// import { StateToProps } from '../../../../types/store/store';
+class ProductsList extends Component<StoreProps> {
+    componentDidMount(): void {
+        const { getProductsFromDb: fetchProducts } = this.props;
+        fetchProducts();
+    }
 
-function ProductsList({ products }: PostObject): ReactElement | null {
-    const { value, loading } = usePromise<string>(products);
+    render(): ReactElement | null {
+        const { products } = this.props;
 
-    // Removes loading spinner when fetch finished
-    const removeSpinnerHandler = () => {
-        const spinnerUI = document.querySelector('.spinner');
-        if (spinnerUI) {
-            spinnerUI.remove();
-        }
-    };
+        // Removes loading spinner when fetch finished
+        const removeSpinnerHandler = () => {
+            const spinnerUI = document.querySelector('.spinner');
+            if (spinnerUI) {
+                spinnerUI.remove();
+            }
+        };
 
-    if (loading) return null;
+        if (!products.items) return null;
 
-    return (
-        <div className="product__container">
-            {value.map(item => (
-                <Product
-                    key={item._id}
-                    id={item._id}
-                    name={item.name}
-                    description={item.description}
-                    price={item.price}
-                    date={item.date}
-                />
-            ))}
-            {removeSpinnerHandler()}
-        </div>
-    );
+        return (
+            <div className="product__container">
+                {products.items.map(item => (
+                    <Product
+                        key={item._id}
+                        id={item._id}
+                        name={item.name}
+                        description={item.description}
+                        price={item.price}
+                        date={item.date}
+                    />
+                ))}
+                {removeSpinnerHandler()}
+            </div>
+        );
+    }
 }
 
-const mapStateToProps = ({ product }: any) => {
+const mapDispatchToProps = {
+    getProductsFromDb,
+};
+
+const mapStateToProps = ({ product }: InitialState) => {
     return {
         products: product,
     };
 };
 
-export default connect(mapStateToProps)(ProductsList);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ProductsList);

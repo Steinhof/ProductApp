@@ -6,12 +6,12 @@ export interface Action<T> {
 }
 
 export interface InitialState {
-    items: PostObject[];
+    product: PostObject[];
 }
 
-export interface StateToProps {
+export interface StoreProps {
+    getProductsFromDb: () => void;
     products: {
         items: PostObject[];
-        loading: boolean;
     };
 }

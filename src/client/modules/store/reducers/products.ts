@@ -1,6 +1,9 @@
 import { AnyAction } from 'redux';
-import { DELETE_PRODUCT, POST_PRODUCT_DATA } from '../actions/actionsTypes';
-import { getProductsFromDb } from '../actions/list';
+import {
+    DELETE_PRODUCT,
+    GET_PRODUCTS_DATA,
+    POST_PRODUCT_DATA,
+} from '../actions/actionsTypes';
 
 const initialState = {
     items: [],
@@ -11,17 +14,21 @@ export default function productReducer(
     action: AnyAction,
 ) {
     switch (action.type) {
+        case GET_PRODUCTS_DATA:
+            return { ...state, items: action.payload };
+
         case POST_PRODUCT_DATA:
-            return getProductsFromDb().then(res => res.getProducts);
+            return { ...state, items: [...state.items, action.payload] };
 
         case DELETE_PRODUCT:
-            return getProductsFromDb().then(res => {
-                return res.getProducts.filter(
-                    item => item._id !== action.payload,
-                );
-            });
+            return {
+                ...state,
+                items: [
+                    ...state.items.filter(item => item._id !== action.payload),
+                ],
+            };
 
         default:
-            return getProductsFromDb().then(res => res.getProducts);
+            return state;
     }
 }
