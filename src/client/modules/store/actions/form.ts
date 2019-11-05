@@ -26,6 +26,8 @@ export default function createProduct(item: PostObject) {
                     payload: res.createProduct,
                 }),
             )
-            .catch(err => console.error(`[ACTIONS-FORM] Query failed. ${err}`));
+            .catch(err =>
+                console.error(`[ACTIONS-FORM-CREATE] Query failed. ${err}`),
+            );
     };
 }

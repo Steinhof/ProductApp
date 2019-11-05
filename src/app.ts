@@ -25,7 +25,7 @@ app.use(
     expressGraphql({
         schema: productSchema,
         rootValue: resolver,
-        // graphiql: true,
+        graphiql: true,
     }),
 );
 

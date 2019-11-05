@@ -1,8 +1,8 @@
 {
   "lang": "EN",
-  "name": "Tour project",
-  "short_name": "Natours",
-  "description": "Explore amazing tours",
+  "name": "React Products app",
+  "short_name": "ReactApp",
+  "description": "Explore amazing products",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#7ed56f",

@@ -59,7 +59,7 @@ gulp.task('SWFILES', done => {
             './src/public/index.html',
         ]);
     }
-    setTimeout(() => timeOut(), 3000);
+    setTimeout(() => timeOut(), 25000);
 
     done();
 });

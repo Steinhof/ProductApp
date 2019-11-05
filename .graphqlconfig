@@ -1,6 +1,6 @@
 {
   "name": "Untitled GraphQL Schema",
-  "schemaPath": "schema.graphql",
+  "schemaPath": "./src/graphql/product.schema.ts",
   "extensions": {
     "endpoints": {
       "Default GraphQL Endpoint": {

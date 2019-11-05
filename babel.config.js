@@ -1,8 +1,6 @@
 module.exports = api => {
     api.cache(true);
     const presets = [
-        '@babel/preset-react',
-        '@babel/preset-typescript',
         [
             '@babel/preset-env',
             {
@@ -11,6 +9,15 @@ module.exports = api => {
                 loose: true,
             },
         ],
+        [
+            '@babel/preset-typescript',
+            {
+                isTSX: true,
+                allowNamespaces: true,
+                allExtensions: true,
+            },
+        ],
+        '@babel/preset-react',
         'minify',
     ];
     const plugins = [];

@@ -23,8 +23,8 @@
     "noEmit": true,
     "incremental": true,
     "composite": true,
-    "target": "es6",
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "es6",
     "sourceMap": true,
     "downlevelIteration": true,
     "allowJs": true,
@@ -32,6 +32,9 @@
     "jsx": "react",
     "lib": ["dom", "es5", "es6", "esnext", "webworker"]
   },
+  "include": [
+    "src"
+  ],
   "exclude": [
     "node_modules",
     "**/*.test.ts"

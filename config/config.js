@@ -80,9 +80,7 @@ module.exports = {
             node: './webpack.node.js',
         },
         ts: {
-            node: 'tsconfig.node.json',
             dev: 'tsconfig.json',
-            build: 'tsconfig.build.json',
         },
     },
     criticalCssConfig: {

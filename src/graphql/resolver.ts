@@ -16,12 +16,12 @@ export default {
             .save()
             .then(() =>
                 logger.info(
-                    `[GRAPHQL RESOLVER] Object successfully saved to mongoDB`,
+                    `[GRAPHQL RESOLVER-CREATE] Object successfully saved to mongoDB`,
                 ),
             )
             .catch(err =>
                 logger.error(
-                    `[GRAPHQL RESOLVER] Error occurred while trying to save the object. ${err}`,
+                    `[GRAPHQL RESOLVER-CREATE] Error occurred while trying to save the object. ${err}`,
                 ),
             );
         return product;
@@ -30,7 +30,7 @@ export default {
         return Product.find({}, (err, data) => {
             if (err)
                 logger.error(
-                    `[GRAPHQL RESOLVER] Can't get objects from MongoDb. ${err}`,
+                    `[GRAPHQL RESOLVER-GET-ALL] Can't get all objects from MongoDb. ${err}`,
                 );
 
             return data;
@@ -38,7 +38,10 @@ export default {
     },
     deleteProduct: (id: string) => {
         return Product.deleteOne({ _id: id }, err => {
-            if (err) console.log(err);
+            if (err)
+                logger.error(
+                    `[GRAPHQL RESOLVER-DELETE] Can't delete object from MongoDb. ${err}`,
+                );
         });
     },
 };
