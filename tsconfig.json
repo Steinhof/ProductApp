@@ -23,8 +23,9 @@
     "noEmit": true,
     "incremental": true,
     "composite": true,
-    "target": "esnext",
+    "target": "es6",
     "module": "es6",
+    "resolveJsonModule": true,
     "sourceMap": true,
     "downlevelIteration": true,
     "allowJs": true,
@@ -33,9 +34,9 @@
     "useDefineForClassFields": true,
     "lib": [
       "dom",
+      "dom.iterable",
       "es6",
-      "esnext",
-      "webworker"
+      "esnext"
     ]
   },
   "include": [

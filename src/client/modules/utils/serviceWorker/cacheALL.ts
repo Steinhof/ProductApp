@@ -4,7 +4,7 @@ const addAll = function(
     cache: Cache,
     immutableRequests: stringArr = [],
     mutableRequests: stringArr = [],
-) {
+): Promise<void> {
     // Verify arguments
     if (
         !(cache instanceof Cache) ||

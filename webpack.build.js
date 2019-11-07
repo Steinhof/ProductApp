@@ -1,13 +1,11 @@
 const webpack = require('webpack');
-const sass = require('sass');
 const path = require('path');
-const glob = require('glob');
+const glob = require('glob-all');
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
-const Fibers = require('fibers');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const PurgecssPlugin = require('purgecss-webpack-plugin');
 const CriticalCssPlugin = require('critical-css-webpack-plugin');
@@ -19,7 +17,6 @@ const getPackageNameFromPath = require('./config/getPackageNameFromPath');
 
 // Webpack parameters
 const sassRegex = /\.sass$/;
-const sassModuleRegex = /\.module\.sass$/;
 
 module.exports = {
     mode: 'production',
@@ -41,55 +38,33 @@ module.exports = {
         rules: [
             {
                 test: /\.ts(x?)$/,
-                use: ['babel-loader'],
+                use: [
+                    'babel-loader',
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            happyPackMode: true,
+                            transpileOnly: true,
+                            experimentalWatchApi: true,
+                        },
+                    },
+                ],
                 include: path.resolve('src'),
             },
             {
                 test: sassRegex,
-                exclude: sassModuleRegex,
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
-                        options: { importLoaders: 2 },
+                        options: { importLoaders: 3 },
                     },
                     'postcss-loader',
                     'group-css-media-queries-loader',
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            sassOptions: {
-                                implementation: sass,
-                                fiber: Fibers,
-                                indentedSyntax: true,
-                            },
-                        },
-                    },
+                    'sass-loader',
                 ],
                 // If 'false' any stylesheets imported in the manner above are now gone from the output.
                 sideEffects: true,
-            },
-            {
-                test: sassModuleRegex,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader',
-                        options: { importLoaders: 2, modules: true },
-                    },
-                    'postcss-loader',
-                    'group-css-media-queries-loader',
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            sassOptions: {
-                                implementation: sass,
-                                fiber: Fibers,
-                                indentedSyntax: true,
-                            },
-                        },
-                    },
-                ],
             },
         ],
     },
@@ -137,15 +112,17 @@ module.exports = {
             chunkFilename: 'css/[id].[contenthash].css',
             ignoreOrder: false, // Enable to remove warnings about conflicting order
         }),
+        new ScriptExtHtmlWebpackPlugin({
+            // preload: 'runtime', // async, defer, type='module', preload, prefetch, module
+        }),
         new PurgecssPlugin({
-            paths: glob.sync(cfg.globs.src[0], { nodir: true }),
+            paths: glob.sync([cfg.globs.dist[0], cfg.globs.src[0]], {
+                nodir: true,
+            }),
             trim: true,
             shorten: true,
             keyframes: true,
             fontFace: true,
-        }),
-        new ScriptExtHtmlWebpackPlugin({
-            // preload: 'runtime', // async, defer, type='module', preload, prefetch, module
         }),
     ],
     optimization: {

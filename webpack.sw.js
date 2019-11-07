@@ -4,6 +4,9 @@ const TerserPlugin = require('terser-webpack-plugin');
 // Settings
 const cfg = require('./config/config');
 
+const tsRegex = /\.ts$/;
+const dtsRegex = /\.d.ts$/;
+
 module.exports = {
     context: __dirname,
     target: 'web',
@@ -18,7 +21,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.ts$/,
+                test: tsRegex,
                 exclude: /node_modules/,
                 use: [
                     {
@@ -29,10 +32,14 @@ module.exports = {
                     },
                 ],
             },
+            {
+                test: dtsRegex,
+                loader: 'ignore-loader',
+            },
         ],
     },
     resolve: {
-        extensions: ['.ts', '.js'],
+        extensions: ['.ts', '.js', '.ts', '.d.ts'],
     },
     optimization: {
         minimizer: [

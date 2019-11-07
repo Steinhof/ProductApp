@@ -1,3 +1,5 @@
+import 'types-serviceworker/src/webworker';
+
 import addAll from './cacheALL';
 
 const VERSION = 'BEACON-VERSION';
@@ -9,7 +11,9 @@ const STATIC_FILES: string[] = ['BEACON-STATIC'];
 
 const MUTABLE_FILES: string[] = [];
 
-self.addEventListener('install', (event: any) => {
+declare let self: ServiceWorkerGlobalScope;
+
+self.addEventListener('install', (event: ExtendableEvent) => {
     event.waitUntil(
         caches
             .open(PRE_CACHE_NAME)
@@ -17,7 +21,7 @@ self.addEventListener('install', (event: any) => {
     );
 });
 
-self.addEventListener('fetch', (event: any) => {
+self.addEventListener('fetch', (event: FetchEvent) => {
     const { request } = event;
     event.respondWith(
         caches.match(request).then(response => {
@@ -44,7 +48,7 @@ self.addEventListener('fetch', (event: any) => {
     );
 });
 
-self.addEventListener('activate', (event: any) => {
+self.addEventListener('activate', (event: ExtendableEvent) => {
     event.waitUntil(
         caches.keys().then(cacheNames => {
             cacheNames.forEach(item => {

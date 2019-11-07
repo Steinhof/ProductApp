@@ -28,11 +28,6 @@ module.exports = {
     entry: {
         main: path.resolve(__dirname, cfg.entries.modules.react.main),
     },
-    // externals: {
-    //     // to avoid bundling all dependencies - use cdn react
-    //     react: 'React',
-    //     'react-dom': 'ReactDOM',
-    // },
     output: {
         filename: 'js/[name].js',
         publicPath: '',

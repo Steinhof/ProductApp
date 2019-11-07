@@ -1,9 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import App from './App';
 import '../sass/react-app/main.sass';
-// import registerServiceWorker from './implementation/serviceWorker/registerServiceWorker';
+// import registerServiceWorker from './utils/serviceWorker/registerServiceWorker';
 //
 // registerServiceWorker();
 
-ReactDOM.render(<App />, document.querySelector('.content'));
+// const products = {
+//     items: [{ cat: 'meow' }, { dog: 'sis' }],
+// };
+//
+// products.items?.map(item => console.log('defined'));
+
+render(<App />, document.querySelector('.content'));

@@ -1,8 +1,8 @@
 module.exports = {
     parser: '@typescript-eslint/parser', // Specifies the ESLint parser
     parserOptions: {
-        ecmaVersion: 2018,
-        // project: path.resolve(__dirname, './tsconfig.json'),
+        ecmaVersion: 2020,
+        // project: './tsconfig.json',
         tsconfigRootDir: __dirname,
         sourceType: 'module', // Allows for the use of imports
         ecmaFeatures: {

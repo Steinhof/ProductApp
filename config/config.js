@@ -50,7 +50,9 @@ module.exports = {
     },
     globs: {
         src: ['./src/**/*'],
-        public: ['./src/public/**/*'],
+        dist: ['./dist/**/*'],
+        client: ['./src/client/**/*'],
+        distPublic: ['./dist/public/**/*'],
         modules: ['./src/client/modules/**/*'],
         sass: ['./src/client/sass/**/*.sass'],
         css: ['./src/public/css/*.css'],
@@ -77,7 +79,7 @@ module.exports = {
                 main: './src/client/modules/implementation/assembly/wasm.ts',
             },
             sw: {
-                main: './src/client/modules/implementation/serviceWorker/sw.ts',
+                main: './src/client/modules/utils/serviceWorker/sw.ts',
                 compiled: './dist/public/sw.js',
             },
         },

@@ -7,7 +7,7 @@ module.exports = api => {
                 useBuiltIns: 'usage',
                 corejs: 3,
                 loose: true,
-                modules: false,
+                modules: false, // Ensure no compilers transform your ES2015 module syntax into CommonJS
             },
         ],
         [
