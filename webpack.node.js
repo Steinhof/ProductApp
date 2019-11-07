@@ -17,12 +17,12 @@ module.exports = {
     mode: 'production',
     context: __dirname,
     entry: {
-        server: path.resolve(__dirname, cfg.files.serverTS),
+        server: path.resolve(__dirname, cfg.entries.server.main.ts),
     },
     output: {
         filename: '[name].js',
         publicPath: '',
-        path: path.resolve(__dirname, cfg.paths.src.base),
+        path: path.resolve(__dirname, cfg.paths.dist.base),
     },
     externals: [nodeExternals()], // Don't include node_nodules to server
     watch: true,
@@ -36,7 +36,6 @@ module.exports = {
                 test: /\.ts$/,
                 exclude: /node_modules/,
                 use: [
-                    'cache-loader',
                     {
                         // Performance depends on the project [see: https://blog.johnnyreilly.com/search?updated-max=2019-01-05T20:02:00Z&max-results=1&start=14&by-date=false ]
                         loader: 'thread-loader',
@@ -56,8 +55,8 @@ module.exports = {
         new NodemonPlugin({
             ext: 'js, json',
             env: {
-                NODE_ENV: 'development',
-                // NODE_OPTIONS: '--inspect', // To run debugger
+                NODE_ENV: 'production',
+                // NODE_OPTIONS: '--inspect', // To node.js run debugger
             },
         }),
     ],

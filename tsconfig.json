@@ -30,7 +30,13 @@
     "allowJs": true,
     "checkJs": false,
     "jsx": "react",
-    "lib": ["dom", "es5", "es6", "esnext", "webworker"]
+    "useDefineForClassFields": true,
+    "lib": [
+      "dom",
+      "es6",
+      "esnext",
+      "webworker"
+    ]
   },
   "include": [
     "src"

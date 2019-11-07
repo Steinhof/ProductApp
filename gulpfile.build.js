@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const del = require('del');
-const typedoc = require('gulp-typedoc');
 const imagemin = require('gulp-imagemin');
 const webpack = require('webpack');
 const SWInjectFiles = require('./config/SWInjectFiles');
@@ -15,7 +14,7 @@ const webpackErrorHandler = require('./config/webpackErrorHandler');
 // DELETE OLD FILES
 // -----------------------------------------------------------------------------
 gulp.task('CLEAN', done => {
-    del([`${cfg.paths.public.css}*`, `${cfg.paths.public.js}*`]);
+    del([`${cfg.paths.dist.public.css}*`, `${cfg.paths.dist.public.js}*`]);
     done();
 });
 
@@ -47,19 +46,22 @@ gulp.task('SW', done => {
 // INJECT CACHE FILES TO SW
 // -----------------------------------------------------------------------------
 gulp.task('SWFILES', done => {
-    function timeOut() {
-        const fillSW = new SWInjectFiles('./src/public/sw.js', {
-            ignorePath: './src/public',
+    // To make sure that sw assets included after webpack main compilation
+
+    function injectionTimer() {
+        const fillSW = new SWInjectFiles(cfg.entries.modules.sw.compiled, {
+            ignorePath: './dist/public',
         });
 
         fillSW.writeStaticFiles([
-            './src/public/img/**/*',
-            './src/public/js/*',
-            './src/public/css/*',
-            './src/public/index.html',
+            './dist/public/img/**/*',
+            './dist/public/css/*',
+            './dist/public/js/!(runtime*)', // Match any js files except runtime chunk, because it already included  in index.html
+            './dist/public/index.html',
         ]);
     }
-    setTimeout(() => timeOut(), 25000);
+
+    setTimeout(() => injectionTimer(), 25000);
 
     done();
 });
@@ -69,7 +71,7 @@ gulp.task('SWFILES', done => {
 // -----------------------------------------------------------------------------
 gulp.task('IMAGEMIN', () =>
     gulp
-        .src(cfg.paths.public.img)
+        .src(cfg.globs.distImg)
         .pipe(
             imagemin([
                 imagemin.gifsicle({ interlaced: true }),
@@ -80,27 +82,7 @@ gulp.task('IMAGEMIN', () =>
                 }),
             ]),
         )
-        .pipe(gulp.dest(cfg.paths.public.img)),
-);
-
-// -----------------------------------------------------------------------------
-// TYPEDOC
-// -----------------------------------------------------------------------------
-gulp.task('TYPEDOC', () =>
-    gulp.src(cfg.globs.distModules).pipe(
-        typedoc({
-            module: 'commonjs',
-            exclude: '/node_modules/',
-            target: 'es5',
-            includeDeclarations: true,
-            ignoreCompilerErrors: true,
-            experimentalDecorators: true,
-            excludeExternals: true,
-            version: true,
-            out: './',
-            name: 'My project',
-        }),
-    ),
+        .pipe(gulp.dest(cfg.paths.dist.public.img)),
 );
 
 // -----------------------------------------------------------------------------

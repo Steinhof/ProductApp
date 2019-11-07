@@ -1,3 +1,5 @@
+import addAll from './cacheALL';
+
 const VERSION = 'BEACON-VERSION';
 const PRE_CACHE_NAME = 'pre-cache';
 const DYNAMIC_CACHE_NAME = 'dynamic';
@@ -9,24 +11,9 @@ const MUTABLE_FILES: string[] = [];
 
 self.addEventListener('install', (event: any) => {
     event.waitUntil(
-        caches.open(`${PRE_CACHE_NAME}-${VERSION}`).then(cache => {
-            const NEW_STATIC_FILES: string[] = [];
-            return Promise.all(
-                STATIC_FILES.map(url => {
-                    return caches.match(url).then(response => {
-                        if (response) {
-                            return cache.put(url, response);
-                        }
-                        NEW_STATIC_FILES.push(url);
-                        return Promise.resolve();
-                    });
-                }),
-            )
-                .then(() => {
-                    return cache.addAll(NEW_STATIC_FILES.concat(MUTABLE_FILES));
-                })
-                .catch(err => console.error(err));
-        }),
+        caches
+            .open(PRE_CACHE_NAME)
+            .then(cache => addAll(cache, STATIC_FILES, MUTABLE_FILES)),
     );
 });
 
@@ -50,7 +37,6 @@ self.addEventListener('fetch', (event: any) => {
                                 cache.put(request, cacheResp);
                             });
                     }
-
                     return res;
                 })
             );

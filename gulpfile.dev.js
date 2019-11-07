@@ -16,8 +16,8 @@ const webpackErrorHandler = require('./config/webpackErrorHandler');
 // -----------------------------------------------------------------------------
 gulp.task('CLEAN', () => {
     return del([
-        `${cfg.paths.public.css}*`,
-        `${cfg.paths.public.js}*`,
+        `${cfg.paths.dist.public.css}*`,
+        `${cfg.paths.dist.public.js}*`,
         cfg.paths.logs.base,
     ]);
 });
@@ -39,7 +39,7 @@ gulp.task('WEBPACK', done => {
         stats: webpackLogger,
         overlay: true,
         hot: true,
-        contentBase: path.join(__dirname, cfg.paths.src.base),
+        contentBase: path.join(__dirname, cfg.paths.dist.base),
         watchContentBase: true,
         /* See [How to tell webpack dev server to serve index.html for any route (https://stackoverflow.com/q/31945763] */
         historyApiFallback: true,

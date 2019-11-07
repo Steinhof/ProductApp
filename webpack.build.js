@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const sass = require('sass');
 const path = require('path');
 const glob = require('glob');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -10,22 +11,27 @@ const Fibers = require('fibers');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const PurgecssPlugin = require('purgecss-webpack-plugin');
 const CriticalCssPlugin = require('critical-css-webpack-plugin');
+const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 
 // Settings
 const cfg = require('./config/config');
 const getPackageNameFromPath = require('./config/getPackageNameFromPath');
+
+// Webpack parameters
+const sassRegex = /\.sass$/;
+const sassModuleRegex = /\.module\.sass$/;
 
 module.exports = {
     mode: 'production',
     context: __dirname,
     target: 'web',
     entry: {
-        main: path.resolve(__dirname, cfg.files.reactMain),
+        main: path.resolve(__dirname, cfg.entries.modules.react.main),
     },
     output: {
         filename: 'js/[name].[contenthash].js',
         publicPath: '',
-        path: path.resolve(__dirname, cfg.paths.public.base),
+        path: path.resolve(__dirname, cfg.paths.dist.public.base),
         // libraryTarget: 'commonjs2', // To make the library compatible with other environments
     },
     resolve: {
@@ -39,7 +45,8 @@ module.exports = {
                 include: path.resolve('src'),
             },
             {
-                test: /\.(sa|sc|c)ss$/,
+                test: sassRegex,
+                exclude: sassModuleRegex,
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
@@ -52,7 +59,31 @@ module.exports = {
                         loader: 'sass-loader',
                         options: {
                             sassOptions: {
-                                implementation: require('sass'),
+                                implementation: sass,
+                                fiber: Fibers,
+                                indentedSyntax: true,
+                            },
+                        },
+                    },
+                ],
+                // If 'false' any stylesheets imported in the manner above are now gone from the output.
+                sideEffects: true,
+            },
+            {
+                test: sassModuleRegex,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: { importLoaders: 2, modules: true },
+                    },
+                    'postcss-loader',
+                    'group-css-media-queries-loader',
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sassOptions: {
+                                implementation: sass,
                                 fiber: Fibers,
                                 indentedSyntax: true,
                             },
@@ -65,7 +96,7 @@ module.exports = {
     plugins: [
         new FixStyleOnlyEntriesPlugin(),
         new CriticalCssPlugin({
-            base: cfg.paths.public.base,
+            base: cfg.paths.dist.public.base,
             src: 'index.html',
             dest: 'index.html',
             inline: true,
@@ -73,18 +104,19 @@ module.exports = {
             extract: true,
             dimensions: [
                 {
-                    width: cfg.criticalCssConfig.criticalWidthDesktop,
-                    height: cfg.criticalCssConfig.criticalHeightDesktop,
+                    width: 1376,
+                    height: 768,
                 },
                 {
-                    width: cfg.criticalCssConfig.criticalWidthMobile,
-                    height: cfg.criticalCssConfig.criticalHeightMobile,
+                    width: 375,
+                    height: 667,
                 },
             ],
         }),
         new webpack.HashedModuleIdsPlugin(),
         new HtmlWebpackPlugin({
-            template: cfg.files.template,
+            inject: true,
+            template: cfg.entries.html.template,
             minify: {
                 removeComments: true,
                 collapseWhitespace: true,
@@ -98,24 +130,27 @@ module.exports = {
                 minifyURLs: true,
             },
         }),
+        // This Webpack plugin inlines script chunks into index.html.
+        new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime/]),
         new MiniCssExtractPlugin({
             filename: 'css/[name].[contenthash].css',
             chunkFilename: 'css/[id].[contenthash].css',
             ignoreOrder: false, // Enable to remove warnings about conflicting order
         }),
         new PurgecssPlugin({
-            paths: glob.sync(`${cfg.paths.src.base}/**/*`, { nodir: true }),
+            paths: glob.sync(cfg.globs.src[0], { nodir: true }),
             trim: true,
             shorten: true,
             keyframes: true,
             fontFace: true,
         }),
         new ScriptExtHtmlWebpackPlugin({
-            preload: 'runtime', // async, defer, type='module', preload, prefetch, module
+            // preload: 'runtime', // async, defer, type='module', preload, prefetch, module
         }),
     ],
     optimization: {
         runtimeChunk: true,
+        usedExports: true, //  Webpack will identify any code it thinks isn’t being used
         splitChunks: {
             chunks: 'all',
             minSize: 0,

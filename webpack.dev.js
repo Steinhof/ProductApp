@@ -26,7 +26,7 @@ module.exports = {
     mode: 'development',
     context: __dirname,
     entry: {
-        main: path.resolve(__dirname, cfg.files.reactMain),
+        main: path.resolve(__dirname, cfg.entries.modules.react.main),
     },
     // externals: {
     //     // to avoid bundling all dependencies - use cdn react
@@ -36,7 +36,7 @@ module.exports = {
     output: {
         filename: 'js/[name].js',
         publicPath: '',
-        path: path.resolve(__dirname, cfg.paths.public.base),
+        path: path.resolve(__dirname, cfg.paths.dist.public.base),
     },
     devtool: 'cheap-module-eval-source-map',
     watch: true,
@@ -66,6 +66,7 @@ module.exports = {
                 test: /\.(sa|sc|c)ss$/,
                 exclude: /node_modules/,
                 use: [
+                    'cache-loader',
                     {
                         // Performance depends on the project [see: https://blog.johnnyreilly.com/search?updated-max=2019-01-05T20:02:00Z&max-results=1&start=14&by-date=false ]
                         loader: 'thread-loader',
@@ -97,7 +98,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: cfg.files.template,
+            template: cfg.entries.html.template,
         }),
     ],
 };

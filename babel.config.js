@@ -7,6 +7,7 @@ module.exports = api => {
                 useBuiltIns: 'usage',
                 corejs: 3,
                 loose: true,
+                modules: false,
             },
         ],
         [
@@ -18,7 +19,6 @@ module.exports = api => {
             },
         ],
         '@babel/preset-react',
-        'minify',
     ];
     const plugins = [];
 

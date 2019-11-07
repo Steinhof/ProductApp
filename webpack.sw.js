@@ -8,17 +8,18 @@ module.exports = {
     context: __dirname,
     target: 'web',
     entry: {
-        sw: path.resolve(__dirname, cfg.files.sw),
+        sw: path.resolve(__dirname, cfg.entries.modules.sw.main),
     },
     mode: 'production',
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, cfg.paths.public.base),
+        path: path.resolve(__dirname, cfg.paths.dist.public.base),
     },
     module: {
         rules: [
             {
                 test: /\.ts$/,
+                exclude: /node_modules/,
                 use: [
                     {
                         loader: 'babel-loader',
