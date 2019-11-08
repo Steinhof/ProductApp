@@ -1,8 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const Fibers = require('fibers');
-
 const threadLoader = require('thread-loader');
+
+// Webpack parameters
+const sassRegex = /\.sass$/;
 
 /* Pre warming, this boots the max number of workers in the pool */
 threadLoader.warmup(
@@ -58,7 +59,7 @@ module.exports = {
                 include: path.resolve('src'),
             },
             {
-                test: /\.(sa|sc|c)ss$/,
+                test: sassRegex,
                 exclude: /node_modules/,
                 use: [
                     'cache-loader',
@@ -73,20 +74,9 @@ module.exports = {
                     'style-loader',
                     {
                         loader: 'css-loader',
-                        options: {
-                            // modules: true, // to use with classes keyword
-                        },
+                        options: { importLoaders: 1 },
                     },
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            sassOptions: {
-                                implementation: require('sass'),
-                                fiber: Fibers,
-                                indentedSyntax: true,
-                            },
-                        },
-                    },
+                    'sass-loader',
                 ],
             },
         ],

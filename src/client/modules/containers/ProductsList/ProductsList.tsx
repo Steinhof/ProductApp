@@ -1,30 +1,33 @@
-import React, {Component, ReactElement} from 'react';
-import {connect} from 'react-redux';
+import React, { Component, ReactElement } from 'react';
+import { connect } from 'react-redux';
 import Product from '../../components/Product/Product';
-import {getProductsFromDb} from '../../store/actions/list';
-import {InitialState, StoreProps} from '../../../../types/store/store';
+import { getProductsFromDb } from '../../store/actions/list';
+import { StoreProps } from '../../../../types/store/store';
 
 class ProductsList extends Component<StoreProps> {
-
     componentDidMount(): void {
-        const {getProductsFromDb} = this.props;
+        const { getProductsFromDb } = this.props;
         getProductsFromDb();
     }
 
-    render(): ReactElement | null {
-        const {products} = this.props;
+    addLoadingSpinnerHandler = () => {
+        return (
+            <img
+                className="spinner"
+                src="./img/Rolling-1s-200px.svg"
+                alt="please stand by"
+            />
+        );
+    };
 
-        // Removes loading spinner when fetch finished
-        const removeSpinnerHandler = () => {
-            const spinnerUI = document.querySelector('.spinner');
-            if (spinnerUI) {
-                spinnerUI.remove();
-            }
-        };
+    render(): ReactElement | null {
+        const { products } = this.props;
 
         return (
             <div className="product__container">
-                {products.items?.map(item => (
+                {products.loading
+                    ? this.addLoadingSpinnerHandler()
+                    : products.items.map(item => (
                           <Product
                               key={item._id}
                               id={item._id}
@@ -34,7 +37,6 @@ class ProductsList extends Component<StoreProps> {
                               date={item.date}
                           />
                       ))}
-                {removeSpinnerHandler()}
             </div>
         );
     }
@@ -44,9 +46,9 @@ const mapDispatchToProps = {
     getProductsFromDb,
 };
 
-const mapStateToProps = ({product}: InitialState) => {
+const mapStateToProps = (state: StoreProps) => {
     return {
-        products: product,
+        products: state.product,
     };
 };
 

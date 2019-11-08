@@ -5,13 +5,19 @@ export interface Action<T> {
     readonly payload?: T;
 }
 
-export interface InitialState {
-    product: PostObject[];
+export interface ProductObject {
+    product: ProductState;
 }
 
 export interface StoreProps {
     getProductsFromDb: () => void;
     products: {
         items: PostObject[];
+        loading: boolean;
     };
+}
+
+export interface ProductState {
+    items: PostObject[];
+    loading: boolean;
 }

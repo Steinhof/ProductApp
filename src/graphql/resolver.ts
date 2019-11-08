@@ -26,7 +26,7 @@ export default {
             );
         return product;
     },
-    getProducts: () => {
+    getProducts: async () => {
         return Product.find({}, (err, data) => {
             if (err)
                 logger.error(
