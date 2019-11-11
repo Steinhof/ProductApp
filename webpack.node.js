@@ -49,6 +49,7 @@ module.exports = {
             },
         ],
     },
+
     plugins: [
         new NodemonPlugin({
             ext: 'js, json',
