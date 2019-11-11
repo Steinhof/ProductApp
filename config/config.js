@@ -12,7 +12,7 @@ module.exports = {
             client: {
                 base: './src/client/',
                 modules: './src/client/modules/',
-                sass: './src/client/sass/',
+                styles: './src/client/styles/',
                 templates: './src/client/templates/',
             },
             public: {
@@ -54,7 +54,7 @@ module.exports = {
         client: ['./src/client/**/*'],
         distPublic: ['./dist/public/**/*'],
         modules: ['./src/client/modules/**/*'],
-        sass: ['./src/client/sass/**/*.sass'],
+        styles: ['./src/client/styles/**/*.sass'],
         css: ['./src/public/css/*.css'],
         js: ['./src/public/js/*.js'],
         img: ['./src/public/img/**/*'],
@@ -62,18 +62,18 @@ module.exports = {
     },
     entries: {
         html: {
-            main: './src/public/index.html',
+            main: './dist/public/index.html',
             template: './src/client/templates/module.html',
         },
-        sass: {
-            main: './src/client/sass/main.sass',
+        styles: {
+            main: './src/client/styles/main.sass',
         },
         modules: {
             react: {
-                main: './src/client/modules/main.tsx',
+                main: './src/client/main.tsx',
             },
             ts: {
-                main: './src/client/modules/main.ts',
+                main: './src/client/main.ts',
             },
             wasm: {
                 main: './src/client/modules/implementation/assembly/wasm.ts',
@@ -89,7 +89,7 @@ module.exports = {
         server: {
             main: {
                 ts: './src/server.ts',
-                js: './src/server.js',
+                js: './dist/server.js',
             },
         },
     },

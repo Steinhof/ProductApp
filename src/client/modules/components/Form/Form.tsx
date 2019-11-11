@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, {FormEvent, ReactElement, SyntheticEvent, useState} from 'react';
 import { connect } from 'react-redux';
 import { AnyAction } from 'redux';
 import Button from '../UI/Button/Button';
@@ -8,7 +8,6 @@ import Info from '../UI/Info/Info';
 function Form({ dispatch }: AnyAction): ReactElement {
     // State hooks
     const [state, setState] = useState(false);
-
     // Show result banner
     const showResultInfo = () => {
         setTimeout(() => setState(false), 2000);
@@ -16,7 +15,7 @@ function Form({ dispatch }: AnyAction): ReactElement {
     };
 
     // Send new product to DB
-    const submitProductHandler = (event: any): void => {
+    const submitProductHandler = (event: React.FormEvent): void => {
         event.preventDefault();
 
         const object = {

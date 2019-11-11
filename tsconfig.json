@@ -12,7 +12,7 @@
     "noImplicitThis": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "noUnusedParameters": false,
+    "noUnusedParameters": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,

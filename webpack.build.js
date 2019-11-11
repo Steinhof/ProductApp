@@ -15,9 +15,6 @@ const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const cfg = require('./config/config');
 const getPackageNameFromPath = require('./config/getPackageNameFromPath');
 
-// Webpack parameters
-const sassRegex = /\.sass$/;
-
 module.exports = {
     mode: 'production',
     context: __dirname,
@@ -52,7 +49,7 @@ module.exports = {
                 include: path.resolve('src'),
             },
             {
-                test: sassRegex,
+                test: /\.sass$/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
@@ -65,6 +62,22 @@ module.exports = {
                 ],
                 // If 'false' any stylesheets imported in the manner above are now gone from the output.
                 sideEffects: true,
+            },
+            {
+                test: /\.html$/,
+                use: [
+                    {
+                        loader: 'html-loader',
+                        options: {
+                            minimize: true,
+                            minifyCSS: true,
+                            minifyJS: true,
+                            removeComments: true,
+                            useShortDoctype: true,
+                            collapseWhitespace: true,
+                        },
+                    },
+                ],
             },
         ],
     },

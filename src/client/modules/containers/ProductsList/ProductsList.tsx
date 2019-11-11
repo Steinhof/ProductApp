@@ -4,7 +4,7 @@ import Product from '../../components/Product/Product';
 import { getProductsFromDb } from '../../store/actions/list';
 import { StoreProps } from '../../../../types/store/store';
 
-class ProductsList extends Component<StoreProps> {
+class _ProductsList extends Component<StoreProps> {
     componentDidMount(): void {
         const { getProductsFromDb } = this.props;
         getProductsFromDb();
@@ -55,4 +55,4 @@ const mapStateToProps = (state: StoreProps) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(ProductsList);
+)(_ProductsList);

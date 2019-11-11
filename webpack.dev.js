@@ -37,7 +37,7 @@ module.exports = {
     devtool: 'cheap-module-eval-source-map',
     watch: true,
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.css', '.sass'],
+        extensions: ['.ts', '.tsx', '.js', '.css', '.sass', '.html'],
     },
     module: {
         rules: [
@@ -78,6 +78,11 @@ module.exports = {
                     },
                     'sass-loader',
                 ],
+            },
+            {
+                test: /\.html$/,
+                exclude: /node_modules/,
+                use: ['html-loader'],
             },
         ],
     },

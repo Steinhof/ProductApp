@@ -9,13 +9,13 @@ const webpackLogger = require('./config/webpackLogger');
 
 module.exports = {
     target: 'node',
+    context: __dirname,
     node: {
         // Need this when working with express, otherwise the build fails
         __dirname: false,
         __filename: false,
     },
     mode: 'production',
-    context: __dirname,
     entry: {
         server: path.resolve(__dirname, cfg.entries.server.main.ts),
     },
@@ -36,16 +36,14 @@ module.exports = {
                 test: /\.ts$/,
                 exclude: /node_modules/,
                 use: [
+                    'cache-loader',
                     {
-                        // Performance depends on the project [see: https://blog.johnnyreilly.com/search?updated-max=2019-01-05T20:02:00Z&max-results=1&start=14&by-date=false ]
-                        loader: 'thread-loader',
+                        loader: 'ts-loader',
                         options: {
-                            // there should be 1 cpu for the fork-ts-checker-webpack-plugin
-                            workers: require('os').cpus().length - 1,
+                            happyPackMode: true,
+                            transpileOnly: true,
+                            experimentalWatchApi: true,
                         },
-                    },
-                    {
-                        loader: 'babel-loader',
                     },
                 ],
             },

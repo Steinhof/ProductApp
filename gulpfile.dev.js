@@ -16,8 +16,11 @@ const webpackErrorHandler = require('./config/webpackErrorHandler');
 // -----------------------------------------------------------------------------
 gulp.task('CLEAN', () => {
     return del([
+        `${cfg.entries.server.main.js}*`,
         `${cfg.paths.dist.public.css}*`,
         `${cfg.paths.dist.public.js}*`,
+        `${cfg.entries.modules.sw.compiled}`,
+        `${cfg.entries.html.main}`,
         cfg.paths.logs.base,
     ]);
 });
